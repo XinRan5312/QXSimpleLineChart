@@ -1,6 +1,7 @@
 package com.ran.qxlinechart;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -52,6 +53,7 @@ public class QXLineView extends View {
 
     private boolean mIsShowValues = true;
     private PointType mPointType = PointType.HOLLOW_SQUARE;
+    private int mHeughtWidthRate=-1;
 
     public void setPointType(PointType pointType) {
         this.mPointType = pointType;
@@ -85,6 +87,10 @@ public class QXLineView extends View {
     public QXLineView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
+        TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.QXChartLineRato);
+        mHeughtWidthRate = (int) a.getFloat(R.styleable.QXChartLineRato_height_ratio_with,mHeughtWidthRate);
+        a.recycle();
     }
 
     private void init(Context context) {
@@ -119,6 +125,19 @@ public class QXLineView extends View {
         mDefaultPointPaint.setStyle(Paint.Style.STROKE);
         mDefaultPointPaint.setStrokeWidth(2f);
 
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int specMode = MeasureSpec.getMode(widthMeasureSpec);
+        int spceSize = MeasureSpec.getSize(widthMeasureSpec);
+        if(mHeughtWidthRate==-1){
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec((spceSize * 13 / 25), specMode);
+        }else{
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec((spceSize * mHeughtWidthRate), specMode);
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override

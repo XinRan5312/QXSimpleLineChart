@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前余额"
+        android:drawableLeft="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/current_trade_in_balance_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="5000"/>
+    <TextView
+        android:id="@+id/current_trade_in_max"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="本次最多可赎回"/>
+    <EditText
+        android:id="@+id/current_trade_in_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入要赎回的金额"
+        android:drawableLeft="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/current_trade_in_earn_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="预期到账日期是2017-4-1"/>
+
+    <TextView
+        android:id="@+id/current_trade_in_sure"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="赎回"
+        android:gravity="center"/>
+
+</LinearLayout>

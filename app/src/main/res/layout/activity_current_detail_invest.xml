@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/current_invested_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="昨日收益(元)"/>
+        <TextView
+            android:id="@+id/current_yestoday_earned_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="100.03"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="累计收益"/>
+        <TextView
+            android:id="@+id/current_earned_all_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="900.03"/>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="近7日年化收益率"/>
+
+    <com.ran.qxlinechart.QXLineView
+        android:id="@+id/invested_seven_earning_chart"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="#ffffff"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/current_invested_trade_in"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="回购"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/current_invested_invest"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="投资"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+</LinearLayout>

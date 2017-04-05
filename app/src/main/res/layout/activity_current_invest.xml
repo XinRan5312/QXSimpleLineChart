@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前余额"
+        android:drawableLeft="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/current_invest_balance_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="5000"/>
+    <EditText
+        android:id="@+id/current_invest_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入要投资的金额"
+        android:drawableLeft="@mipmap/ic_launcher"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/current_invest_protocol_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/current_invest_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="协议内容"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/current_invest_sure"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="立即投资"
+        android:gravity="center"/>
+
+
+</LinearLayout>
