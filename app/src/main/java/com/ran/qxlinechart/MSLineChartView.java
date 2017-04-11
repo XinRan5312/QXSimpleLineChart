@@ -6,11 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -22,9 +20,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by houqixin on 2017/3/29.
+ * Created by houqixin on 2017/4/6.
  */
-public class QXLineView extends View {
+public class MSLineChartView extends View {
     private int mXor;
     private int mYor;
     private int mWidth;
@@ -43,19 +41,27 @@ public class QXLineView extends View {
     private Paint mFillPaint;
     private Paint mDefaultFillPaint;
     private List<Float> mValues;
-    private float mMinY;
-    private float mMaxY;
-    private float mAverageValue;
+    private double mMinY;
+    private double mMaxY;
+    private double mAverageValue;
     private int mLineNum = 5;
     private float mRato;
     private boolean mIsXGridLine = false;
     private boolean mIsYGridLine = true;
 
     private boolean mIsFill = true;
+    private CurrentDetail mCurrentDetail;
+    private List<Double> mXYLineValue;
+    private List<String> mXLineValues;
+
+    public void setCurrentDetail(CurrentDetail currentDetail) {
+        this.mCurrentDetail = currentDetail;
+        invalidate();
+    }
 
     private boolean mIsShowValues = true;
-    private PointType mPointType = PointType.HOLLOW_SQUARE;
-    private int mHeughtWidthRate=-1;
+    private PointType mPointType = PointType.HOLLOW_CIRCLE;
+    private int mHeughtWidthRate = -1;
 
     public void setPointType(PointType pointType) {
         this.mPointType = pointType;
@@ -66,8 +72,7 @@ public class QXLineView extends View {
     }
 
     private float getRato() {
-        return (mMaxY - mMinY) / mLineNum;
-
+        return (float) ((mMaxY - mMinY) / mLineNum);
     }
 
     public void isFillEnable(boolean mIsFill) {
@@ -78,26 +83,24 @@ public class QXLineView extends View {
         this.mFillPaint = mFillPaint;
     }
 
-    public QXLineView(Context context) {
+    public MSLineChartView(Context context) {
         this(context, null);
     }
 
-    public QXLineView(Context context, AttributeSet attrs) {
+    public MSLineChartView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public QXLineView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MSLineChartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
         TypedArray a = getContext().obtainStyledAttributes(attrs,
                 R.styleable.QXChartLineRato);
-        mHeughtWidthRate = (int) a.getFloat(R.styleable.QXChartLineRato_height_ratio_with,mHeughtWidthRate);
+        mHeughtWidthRate = (int) a.getFloat(R.styleable.QXChartLineRato_height_ratio_with, mHeughtWidthRate);
         a.recycle();
     }
 
     private void init(Context context) {
-        getDates();
-        setData();
         mDefaultPaint = new Paint();
         mDefaultPaint.setColor(Color.parseColor("#CBCADD"));
         mDefaultPaint.setStrokeWidth(3);
@@ -115,41 +118,19 @@ public class QXLineView extends View {
         mDefaultValuePaint.setStyle(Paint.Style.STROKE);
         mDefaultValuePaint.setStrokeWidth(3f);
 
-        int colors[] = new int[3];
-        float positions[] = new float[3];
-
-        // 第1个点
-        colors[0] = 0xFF111111;
-        positions[0] = 0;
-
-        // 第2个点
-        colors[1] = 0xFF999999;
-        positions[1] = 0.5f;
-
-        // 第3个点
-        colors[2] = 0xFF111111;
-        positions[2] = 1;
-
-        LinearGradient shader = new LinearGradient(
-                0, 0,
-                0, mHeight,
-                colors,
-                positions,
-                Shader.TileMode.MIRROR);
 
         mDefaultFillPaint = new Paint();
-        mDefaultFillPaint.setColor(Color.YELLOW);
+        mDefaultFillPaint.setColor(Color.parseColor("#333092"));
         mDefaultFillPaint.setStrokeWidth(3f);
         mDefaultFillPaint.setStyle(Paint.Style.FILL);
-        mDefaultFillPaint.setAlpha(120);
-        mDefaultFillPaint.setShader(shader);
+        mDefaultFillPaint.setAlpha(20);
 
 
         mDefaultPointPaint = new Paint();
-        mDefaultPointPaint.setColor(Color.RED);
+        mDefaultPointPaint.setColor(Color.parseColor("#333092"));
         mDefaultPointPaint.setAntiAlias(true);
         mDefaultPointPaint.setStyle(Paint.Style.STROKE);
-        mDefaultPointPaint.setStrokeWidth(2f);
+        mDefaultPointPaint.setStrokeWidth(6f);
 
     }
 
@@ -159,33 +140,18 @@ public class QXLineView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int spceSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize;
-        if(mHeughtWidthRate==-1){
-            heightSize=spceSize * 13 / 25;
+        if (mHeughtWidthRate == -1) {
+            heightSize = spceSize * 13 / 25;
 
-        }else{
-            heightSize=spceSize *spceSize * mHeughtWidthRate;
+        } else {
+            heightSize = spceSize * spceSize * mHeughtWidthRate;
         }
-        setMeasuredDimension(spceSize,heightSize);
+        setMeasuredDimension(spceSize, heightSize);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        mXor = dp2px(27);
-        mYor = getHeight() - dp2px(27);
-        mWidth = getWidth() - dp2px(40);
-        mHeight = mYor - dp2px(13);
-        mYSpace = mHeight / mLineNum;
-        mXSpace = mWidth / 6;
-    }
-
-    public void setData() {
-        mMinY = 4;
-        mMaxY = 5;
-        mLineNum = 5;
-        mYSpace = (mHeight - 80) / mLineNum;
-        mRato = getRato();
-
     }
 
 
@@ -208,66 +174,66 @@ public class QXLineView extends View {
     public void setValuePaint(Paint valuePaint) {
         this.mValuePaint = valuePaint;
     }
-
+    private String creatStringDouble(double shu) {
+        String str= String.valueOf(shu);
+        str=str+0;
+        int index= str.indexOf(".");
+        return str.substring(0,index+3);
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        RectF rectF = new RectF(mXor, mYor - bitmap.getHeight(), mXor + bitmap.getWidth(), mYor);
-        canvas.drawBitmap(bitmap, null, rectF, mDefaultPaint);
-//        RectF rectF1=new RectF(mXor,mYor-3*mYSpace,mXor+mWidth,mYor);
-////        canvas.drawArc(rectF1,0,180,false,mDefaultTextPaint);
-//        canvas.drawOval(rectF1,mDefaultValuePaint);
-        canvas.drawLine(mXor, mYor, mXor, mYor - mHeight, mPaint == null ? mDefaultPaint : mPaint);//y轴
-        //画y轴上的刻度
-        List<Float> yLineValue = new ArrayList<>();
-        yLineValue.add(4f);
-        yLineValue.add(4 + mRato);
-        yLineValue.add(4 + mRato * 2);
-        yLineValue.add(4 + mRato * 3);
-        yLineValue.add(4 + mRato * 4);
-        yLineValue.add(4 + mRato * 5);
+        initDatas();
+        List<String> yLineValue = new ArrayList<>();
         for (int i = 0; i < mLineNum + 1; i++) {
-            //画y轴刻度
-            canvas.drawText("" + yLineValue.get(i), mXor - dp2px(15), mYor - mYSpace * i,
+            yLineValue.add(creatStringDouble(mMinY + mRato * i));
+        }
+        for (int i = 0; i < mLineNum + 1; i++) {
+            canvas.drawText(yLineValue.get(i) + "%", mXor - dp2px(25), mYor - mYSpace * i,
                     mTextPaint == null ? mDefaultTextPaint : mTextPaint);
             if ((i != 0) && mIsYGridLine) {
-                canvas.drawLine(mXor - 5, mYor - mYSpace * i, mXor + mWidth,
-                        mYor - mYSpace * i, mPaint == null ? mDefaultPaint : mPaint);//垂直Y轴的线非x轴
+                canvas.drawLine(mXor, mYor - mYSpace * i, mXor + mWidth,
+                        mYor - mYSpace * i, mPaint == null ? mDefaultPaint : mPaint);
             }
         }
-        canvas.drawLine(mXor, mYor, mXor + mWidth, mYor, mPaint == null ? mDefaultPaint : mPaint);//x轴
-        //画x轴上的刻度线
+        canvas.drawLine(mXor, mYor, mXor + mWidth, mYor, mPaint == null ? mDefaultPaint : mPaint);
         for (int j = 1; j < 7; j++) {
-            canvas.drawLine(mXor + mXSpace * j, mYor, mXor + mXSpace * j, mYor + 5, mPaint == null ? mDefaultPaint : mPaint);
+            canvas.drawLine(mXor + mXSpace * j, mYor, mXor + mXSpace * j, mYor + dp2px(5), mPaint == null ? mDefaultPaint : mPaint);
             if (mIsXGridLine) {
                 canvas.drawLine(mXor + mXSpace * j, mYor, mXor + mXSpace * j, mYor - mHeight, mPaint == null ? mDefaultPaint : mPaint);
-                //垂直x轴的线，非Y轴
             }
         }
-        //画x轴刻度线上的值
-        List<String> xLineValues = getDates();
-        for (int j = 0; j < xLineValues.size(); j++) {
-            canvas.drawText(xLineValues.get(j), mXor + mXSpace * j - dp2px(mTextSize) * 1.5f, mYor + dp2px(15),
+        if (mXLineValues == null) {
+            mXLineValues = getDates();
+        }
+        for (int j = 0; j < mXLineValues.size(); j++) {
+            canvas.drawText(mXLineValues.get(j), mXor + mXSpace * j - dp2px(mTextSize) * 1.5f, mYor + dp2px(15),
                     mTextPaint == null ? mDefaultTextPaint : mTextPaint);
         }
 
         //画曲线
-        List<Float> xyLineValue = new ArrayList<>();
-        xyLineValue.add(4.53f);
-        xyLineValue.add(4.50f);
-        xyLineValue.add(4.55f);
-        xyLineValue.add(4.57f);
-        xyLineValue.add(4.53f);
-        xyLineValue.add(4.60f);
-        xyLineValue.add(4.62f);
+        if (mXYLineValue == null) {
+            mXYLineValue = new ArrayList<>();
+            mXYLineValue.add(4.53);
+            mXYLineValue.add(4.50);
+            mXYLineValue.add(4.55);
+            mXYLineValue.add(4.57);
+            mXYLineValue.add(4.53);
+            mXYLineValue.add(4.60);
+            mXYLineValue.add(4.62);
+        }
         if (mIsFill) {
             Path linePath = new Path();
-            linePath.moveTo(mXor + 4, mYor - 2);
-            for (int i = 0; i < xyLineValue.size(); i++) {
-                linePath.lineTo(mXor + mXSpace * i, mYor - createLineValue(xyLineValue.get(i)));
+            linePath.moveTo(mXor, mYor);
+            for (int i = 0; i < mXYLineValue.size(); i++) {
+                if (i == mXYLineValue.size() - 1) {
+                    linePath.lineTo(mXor + mXSpace * i, (float) (mYor - createLineValue(mXYLineValue.get(i))));
+                } else {
+                    linePath.lineTo(mXor + mXSpace * i, (float) (mYor - createLineValue(mXYLineValue.get(i))));
+                }
+
             }
-            linePath.lineTo(mXor + mWidth - 4, mYor - 2);
+            linePath.lineTo(mXor + mWidth, mYor);
 
             canvas.drawPath(linePath, mFillPaint == null ? mDefaultFillPaint : mFillPaint);
             if (mValuePaint == null) {
@@ -277,26 +243,38 @@ public class QXLineView extends View {
             }
         }
         Path linePath1 = new Path();
-        for (int i = 0; i < xyLineValue.size(); i++) {
+        for (int i = 0; i < mXYLineValue.size(); i++) {
             if (i == 0) {
-                linePath1.moveTo(mXor, mYor - createLineValue(xyLineValue.get(i)));
+                linePath1.moveTo(mXor, (float) (mYor - createLineValue(mXYLineValue.get(i))));
             } else {
-                linePath1.lineTo(mXor + mXSpace * i, mYor - createLineValue(xyLineValue.get(i)));
+                linePath1.lineTo(mXor + mXSpace * i, (float) (mYor - createLineValue(mXYLineValue.get(i))));
             }
 
         }
 
         canvas.drawPath(linePath1, mValuePaint == null ? mDefaultValuePaint : mValuePaint);
-        for (int i = 0; i < xyLineValue.size(); i++) {
+        for (int i = 0; i < mXYLineValue.size(); i++) {
             //画曲线上的点
 
-            if (mIsShowValues) {
-                canvas.drawText("" + xyLineValue.get(i), mXor + mXSpace * i - dp2px(mTextSize) * 1.5f,
-                        mYor - createLineValue(xyLineValue.get(i)) - dp2px(8),
-                        mTextPaint == null ? mDefaultTextPaint : mTextPaint);
+            if (mIsShowValues && i == mXLineValues.size() - 1) {
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_line_chart);
+
+                RectF rectF = new RectF(mXor + mXSpace * i-bitmap.getWidth(),
+                        (float) (mYor - createLineValue(mXYLineValue.get(i))) - bitmap.getHeight()-dp2px(3),
+                        mXor + mXSpace * i,
+                        (float) (mYor - createLineValue(mXYLineValue.get(i)))+-dp2px(3));
+                canvas.drawBitmap(bitmap, null, rectF, mDefaultPaint);
+                Paint textPaint = new Paint();
+                textPaint.setColor(Color.parseColor("#FFFFFF"));
+                textPaint.setTextSize(dp2px(mTextSize));//设置字体大小
+                textPaint.setTypeface(Typeface.DEFAULT);//设置字体类型
+                canvas.drawText(creatStringDouble(mXYLineValue.get(i))+"%",
+                        mXor + mXSpace * i - dp2px(mTextSize) * 1.5f-bitmap.getWidth()/3-dp2px(2),
+                        (float) (mYor - createLineValue(mXYLineValue.get(i)) - dp2px(8)),
+                        textPaint);
 
                 float xCenter = mXor + mXSpace * i;
-                float yCenter = mYor - createLineValue(xyLineValue.get(i));
+                float yCenter = (float) (mYor - createLineValue(mXYLineValue.get(i)));
                 RectF rectF1 = new RectF(xCenter - dp2px(2), yCenter - dp2px(2), xCenter + dp2px(2), yCenter + dp2px(2));
                 switch (mPointType) {
                     case HOLLOW_CIRCLE:
@@ -331,7 +309,59 @@ public class QXLineView extends View {
 
     }
 
-    private float createLineValue(float v) {
+    private void initDatas() {
+        if (mCurrentDetail != null) {
+            generateXYLineValue(mCurrentDetail.last7DaysInterestRates);
+            mMinY = mCurrentDetail.minDisplayInterestRate*100;
+            mMaxY = mCurrentDetail.maxDisplayInterestRate*100;
+            mLineNum = mCurrentDetail.intervalCount;
+        } else {
+            mMinY = 4;
+            mMaxY = 5;
+            mLineNum = 5;
+        }
+        mYSpace = (mHeight - 80) / mLineNum;
+        mRato = getRato();
+        mXor = dp2px(27);
+        mYor = getHeight() - dp2px(27);
+        mWidth = getWidth() - dp2px(40);
+        mHeight = mYor - dp2px(13);
+        mYSpace = mHeight / mLineNum;
+        mXSpace = mWidth / 6;
+    }
+
+
+    private void generateXYLineValue(List<CurrentDetail.DayInterestRate> rates) {
+        if (rates == null || rates.size() != 7) {
+            mCurrentDetail = null;
+            mMinY = 4;
+            mMaxY = 5;
+            mLineNum = 5;
+            mYSpace = (mHeight - 80) / mLineNum;
+            mRato = getRato();
+            mXor = dp2px(27);
+            mYor = getHeight() - dp2px(27);
+            mWidth = getWidth() - dp2px(40);
+            mHeight = mYor - dp2px(13);
+            mYSpace = mHeight / mLineNum;
+            mXSpace = mWidth / 6;
+        } else {
+            mXYLineValue = new ArrayList<>();
+            mXLineValues = new ArrayList<>();
+            for (int i = 0; i < 7; i++) {
+                mXYLineValue.add((rates.get(i).interestRate)*100);
+                mXLineValues.add(creatDateStr(rates.get(i).date));
+
+            }
+        }
+    }
+
+    private String creatDateStr(Long date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
+        return formatter.format(date);
+    }
+
+    private double createLineValue(double v) {
         return ((v - mMinY) / mRato) * mYSpace;
     }
 

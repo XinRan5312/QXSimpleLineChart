@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ran.qxlinechart.MainActivity">
 
-    <com.ran.qxlinechart.QXLineView
+    <com.ran.qxlinechart.MSLineChartView
         android:id="@+id/qx_chart"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -23,4 +23,55 @@
         android:layout_below="@+id/qx_chart"
         android:layout_centerHorizontal="true"
         android:text="Change"/>
+    <com.ran.qxlinechart.MSNumersLineLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《家开发方法卡咖啡》,"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《家开卡咖啡》,"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《法咖啡》,"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《家开卡咖啡》,"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《家法卡咖啡》,"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《家开发方卡咖啡》,"/>
+        <com.ran.qxlinechart.MSAutoNextLineTv
+
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="《卡咖啡》,Go百度,金卡价开发机安检费，骄傲卡夫卡爱饭饭安克发卡机开发卡卡就爱看积分卡开发法可减肥咖啡jakflkjakafafaf"/>
+    </com.ran.qxlinechart.MSNumersLineLinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="false"
+            android:textColor="@color/colorPrimary"
+            android:text="《卡咖啡》"/>
+    </LinearLayout>
+
 </RelativeLayout>

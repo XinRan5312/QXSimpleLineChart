@@ -5,67 +5,77 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/current_uninvest_container"
+    <TextView
+        android:id="@+id/tv_today_earning_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="当日预期年化收益率" />
+
+    <TextView
+        android:id="@+id/tv_today_earning_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="4.5%" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="每日万元收益:" />
+
+        <TextView
+            android:id="@+id/tv_evry_wan_earning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="1.09234元" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_today_earning_hint"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="当日预期年化收益率" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="灵活存取" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_today_earning_hint">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="100元起投" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_today_earning_value"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="4.5%" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <TextView
-                    android:id="@+id/tv_today_earning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="4.5%" />
-                <TextView
-                    android:id="@+id/tv_today_earning_rato"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="4.5%"
-                    android:layout_marginLeft="5dp"/>
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="近7日年化收益率"/>
+        android:gravity="center"
+        android:text="近7日年化收益率" />
 
     <com.ran.qxlinechart.QXLineView
         android:id="@+id/uninvset_seven_earning_chart"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="#ffffff"/>
+        android:background="#ffffff" />
+
     <TextView
         android:id="@+id/current_uninvest_invest"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="立即投资"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="立即投资" />
 
 </LinearLayout>
