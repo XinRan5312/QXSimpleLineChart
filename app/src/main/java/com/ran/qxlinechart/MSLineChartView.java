@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -246,6 +248,8 @@ public class MSLineChartView extends View {
         for (int i = 0; i < mXYLineValue.size(); i++) {
             if (i == 0) {
                 linePath1.moveTo(mXor, (float) (mYor - createLineValue(mXYLineValue.get(i))));
+            } else if(i==6){
+                linePath1.lineTo(mXor + mXSpace * i-10, (float) (mYor - createLineValue(mXYLineValue.get(i))));
             } else {
                 linePath1.lineTo(mXor + mXSpace * i, (float) (mYor - createLineValue(mXYLineValue.get(i))));
             }
@@ -259,10 +263,10 @@ public class MSLineChartView extends View {
             if (mIsShowValues && i == mXLineValues.size() - 1) {
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_line_chart);
 
-                RectF rectF = new RectF(mXor + mXSpace * i-bitmap.getWidth(),
-                        (float) (mYor - createLineValue(mXYLineValue.get(i))) - bitmap.getHeight()-dp2px(3),
-                        mXor + mXSpace * i,
-                        (float) (mYor - createLineValue(mXYLineValue.get(i)))+-dp2px(3));
+                RectF rectF = new RectF(mXor + mXSpace * i-bitmap.getWidth()-dp2px(1),
+                        (float) (mYor - createLineValue(mXYLineValue.get(i))) - bitmap.getHeight()-dp2px(6),
+                        mXor + mXSpace * i-dp2px(1),
+                        (float) (mYor - createLineValue(mXYLineValue.get(i)))-dp2px(6));
                 canvas.drawBitmap(bitmap, null, rectF, mDefaultPaint);
                 Paint textPaint = new Paint();
                 textPaint.setColor(Color.parseColor("#FFFFFF"));
@@ -270,14 +274,15 @@ public class MSLineChartView extends View {
                 textPaint.setTypeface(Typeface.DEFAULT);//设置字体类型
                 canvas.drawText(creatStringDouble(mXYLineValue.get(i))+"%",
                         mXor + mXSpace * i - dp2px(mTextSize) * 1.5f-bitmap.getWidth()/3-dp2px(2),
-                        (float) (mYor - createLineValue(mXYLineValue.get(i)) - dp2px(8)),
+                        (float) (mYor - createLineValue(mXYLineValue.get(i)) - dp2px(12)),
                         textPaint);
 
-                float xCenter = mXor + mXSpace * i;
+                float xCenter = mXor + mXSpace * i-6;
                 float yCenter = (float) (mYor - createLineValue(mXYLineValue.get(i)));
-                RectF rectF1 = new RectF(xCenter - dp2px(2), yCenter - dp2px(2), xCenter + dp2px(2), yCenter + dp2px(2));
+                RectF rectF1 = new RectF(xCenter - dp2px(3), yCenter - dp2px(3), xCenter + dp2px(3), yCenter + dp2px(3));
                 switch (mPointType) {
                     case HOLLOW_CIRCLE:
+                        mDefaultPointPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
                         canvas.drawArc(rectF1, 0, 360, false, mPointPaint == null ? mDefaultPointPaint : mPointPaint);
                         break;
                     case SLIDE_CIRCLE:
@@ -376,6 +381,7 @@ public class MSLineChartView extends View {
 
     private List<String> getDates() {
         Date currentTime = new Date();
+        Long l=currentTime.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
         String dateString = formatter.format(currentTime);
         List<String> strs = new ArrayList<>(7);
