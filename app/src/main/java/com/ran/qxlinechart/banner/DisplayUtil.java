@@ -5,10 +5,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 /**
- * @author gyw
- * @version 1.0
- * @time: 2015-6-5 上午11:44:21
- * @fun: 屏幕工具类
+ Created by houqixin on 2017/4/10.
  */
 public class DisplayUtil {
 

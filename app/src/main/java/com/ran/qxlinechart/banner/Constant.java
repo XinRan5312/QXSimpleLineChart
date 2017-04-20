@@ -1,7 +1,7 @@
 package com.ran.qxlinechart.banner;
 
 /**
- * Created by Administrator on 2016/1/24.
+ *Created by houqixin on 2017/4/10.
  */
 public class Constant {
 

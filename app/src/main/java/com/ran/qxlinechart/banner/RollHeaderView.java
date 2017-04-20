@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * android banner图
+ * Created by houqixin on 2017/4/10.
  */
 public class RollHeaderView extends FrameLayout implements OnPageChangeListener {
 
