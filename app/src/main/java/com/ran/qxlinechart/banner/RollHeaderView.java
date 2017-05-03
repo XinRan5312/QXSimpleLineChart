@@ -267,8 +267,6 @@ public class RollHeaderView extends FrameLayout implements OnPageChangeListener 
     public void onPageScrolled(int arg0, float arg1, int arg2) {
 
     }
-
-
     //停止轮播
     @Override
     protected void onDetachedFromWindow() {
