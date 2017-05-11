@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".dagger2.QxTestDaggerActvity">
+        <activity android:name=".mockit.QxMockitActvity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MSCurrentInvestActivity"></activity>
-        <!--<activity android:name=".unittest.QXUnitTestActvity"></activity>-->
+        <!--<activity android:name=".mockit.QxMockitActvity"></activity>-->
+        <activity android:name=".unittest.QXUnitTestActvity"></activity>
     </application>
 
 </manifest>
