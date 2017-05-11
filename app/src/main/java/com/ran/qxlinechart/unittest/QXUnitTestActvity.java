@@ -18,6 +18,8 @@ import com.ran.qxlinechart.MSBaseActivity;
 import com.ran.qxlinechart.MSCurrentInvestActivity;
 import com.ran.qxlinechart.R;
 
+
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,6 +34,7 @@ public class QXUnitTestActvity extends MSBaseActivity {
     private QxBroacastReceiver receiver;
     private Handler mHandler;
     public int mCount=0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,7 @@ public class QXUnitTestActvity extends MSBaseActivity {
         name="create";
         registerBroacast();
         mHandler=new Handler(getMainLooper());
+
     }
 
     private void registerBroacast() {

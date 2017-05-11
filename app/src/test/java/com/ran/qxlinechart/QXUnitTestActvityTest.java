@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ShareActionProvider;
@@ -40,6 +41,7 @@ import org.robolectric.shadows.ShadowBitmap;
 import org.robolectric.shadows.ShadowDialog;
 import org.robolectric.shadows.ShadowLinearLayout;
 import org.robolectric.shadows.ShadowListView;
+import org.robolectric.shadows.ShadowLog;
 import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
@@ -79,12 +81,12 @@ public class QXUnitTestActvityTest {
 
     @Test
     public void testLifecycleMethods() throws InterruptedException {
-        ActivityController<QXUnitTestActvity> controller = Robolectric.buildActivity(QXUnitTestActvity.class)
-                .create();//已经走到onCreate了
+        ActivityController<QXUnitTestActvity> controller = Robolectric.buildActivity(QXUnitTestActvity.class);
 
         QXUnitTestActvity actvity = (QXUnitTestActvity) controller.get();
         //所有的生命周期都可以模仿但是这里的actviy一定是controller里get得到的，
         // 不能用mActvity因为全局的那个是tartUp的更生命周期的这个不是一个
+        controller.create();
         Assert.assertEquals("create", actvity.name);
 
         controller.start();
@@ -112,10 +114,11 @@ public class QXUnitTestActvityTest {
     @Test
     public void testFragmentLifecyle() {
 
-        FragmentController<QxFramentApp> controller = Robolectric.buildFragment(QxFramentApp.class)
-                .create();//这样一步就走到了onCreatView不是onCraete
-        QxFramentApp framentApp = controller.get();
+        FragmentController<QxFramentApp> controller = Robolectric.buildFragment(QxFramentApp.class);
 
+
+        QxFramentApp framentApp = controller.get();
+         controller.create();////这样一步就走到了onCreatView不仅仅走了onCraete
         Assert.assertEquals("createView", framentApp.name);
 
         controller.start();
@@ -238,6 +241,13 @@ public class QXUnitTestActvityTest {
 
     @Before
     public void setUp() {
+
+        //加上这么一句话无论是测试代码中的log或者被测试中的log都会在控制台输出的
+        ShadowLog.stream=System.out;
+
+        Log.d("Test_log","开启了log日志");
+
+
         //相当于启动了actvity 经过了 oncreate，onStart和onResume这三个生命周期
         //一般只是在启动activiy的时候调用
         mActvity = Robolectric.setupActivity(QXUnitTestActvity.class);
