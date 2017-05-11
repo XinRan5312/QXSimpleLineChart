@@ -71,7 +71,37 @@ public class QxMockitActvityTest {
     @Test
     public void testload(){
         //第一次触发返回true，第二次触发返回false，第三次触发返回true
-        when(mVertifyUrl.vertifyUrl(anyString())).thenReturn(true).thenReturn(false).thenReturn(true);
+//        when(mVertifyUrl.vertifyUrl(anyString())).thenReturn(true).thenReturn(false).thenReturn(true);
+        //下面也可以直接用thenAnther代替thenReturn
+        when(mVertifyUrl.vertifyUrl(anyString())).thenAnswer(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object[] argments = invocation.getArguments();
+                String str= (String) argments[0];
+                if(str.equals("wr"))return false;
+                return true;
+            }
+        }).thenAnswer(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object[] argments = invocation.getArguments();
+                String str= (String) argments[0];
+                if(str.equals("qr"))return true;
+                return false;
+            }
+        }).thenAnswer(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                Object[] argments = invocation.getArguments();
+                String str= (String) argments[0];
+                if(str.equals("qr"))return false;
+                return true;
+            }
+        });
+
+        //mVertifyUrl不是mock的而是spy比如Mockito.spy(QxVertifyUrl.class)就要用doReturn和doAnther
+
+
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
@@ -84,7 +114,6 @@ public class QxMockitActvityTest {
                 return "wr";
             }
         }).when(mMananger).load(anyString(), Mockito.any(QxNetMananger.QxNetCallback.class));
-
 
 
         mbtn.performClick();
