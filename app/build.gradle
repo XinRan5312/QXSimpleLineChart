@@ -27,11 +27,10 @@ dependencies {
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     testCompile "org.robolectric:robolectric:3.3.2"//一个牛奔的android测试框架
-    testCompile 'junit:junit:4.11'
+
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    testCompile "org.mockito:mockito-core:2.+"
-    androidTestCompile "org.mockito:mockito-core:2+"
+
     //robolectric针对support-v4的shadows Fragment 测试会用到
     testCompile "org.robolectric:shadows-support-v4:3.3.2"
 
@@ -43,4 +42,22 @@ dependencies {
 
 //    testCompile 'com.github.fabioCollini:DaggerMock:0.6.1'
 //    androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.1' //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话
+    //java——test
+    testCompile 'junit:junit:4+'
+    testCompile "org.mockito:mockito-core:2.7.2"
+
+    //androidtest
+    androidTestCompile 'junit:junit:4+'
+    androidTestCompile "org.mockito:mockito-core:2.7.2"
+    androidTestCompile "org.mockito:mockito-android:2.7.2"
+    //mockito和powermock冲突两者只能用其一java.lang.NoClassDefFoundError: org/mockito/cglib/proxy/Enhancer
+
+    testCompile 'org.powermock:powermock-module-junit4:1.6.2'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.2'
+
+
+
+//    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.5'
+//    testCompile 'org.powermock:powermock-classloading-xstream:1.6.5'
+//    testCompile 'org.mockito:mockito-all:1.10.19'
 }

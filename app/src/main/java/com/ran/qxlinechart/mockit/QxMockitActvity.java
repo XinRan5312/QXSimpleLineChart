@@ -26,15 +26,15 @@ public class QxMockitActvity extends MSBaseActivity {
     @BindView(R.id.textView)
     TextView mTv;
     public String name;
-    private QxBroacastReceiver receiver;
-    private Handler mHandler;
+     QxBroacastReceiver receiver;
+     Handler mHandler;
     public int mCount = 0;
 
     @Inject
-    private QxNetMananger mNetMananger;
+     QxNetMananger mNetMananger;
 
     @Inject
-    private QxVertifyUrl mVertifyUrl;
+     QxVertifyUrl mVertifyUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

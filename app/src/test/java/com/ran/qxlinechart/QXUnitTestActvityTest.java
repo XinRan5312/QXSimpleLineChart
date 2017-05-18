@@ -10,6 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +50,8 @@ import org.robolectric.shadows.support.v4.SupportFragmentController;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -63,8 +67,72 @@ public class QXUnitTestActvityTest {
     private QXUnitTestActvity mActvity;
     private Button mbtn;
     private TextView mTv;
-    private CountDownLatch runFlag;
 
+    /**
+     * 线程管理和调度者
+     */
+    private CountDownLatch runFlag;
+    long count;
+    @Test
+    public void testCountDownLatch(){
+
+        runFlag=new CountDownLatch(1);//表示run+1
+      count = runFlag.getCount();//是1
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //模拟网络请求或者一个耗时业务
+
+                //完成后
+                runFlag.countDown();//run-1
+                count=runFlag.getCount();//是0
+            }
+        },6000);
+
+        try {
+            /**
+             * 一直等待5秒后或者count==0时才会执行下面的Log，要不然就会一直在这里阻塞
+             */
+            boolean b=runFlag.await(5000, TimeUnit.MILLISECONDS);
+
+            if(b){
+                //表示是等待的时间还没到5s，count就等于零了，就不用等待了
+            }else{
+                //表示count还大于零，但是已经等待的时间大于或者等于5s了，所以也不等待了
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("flag","上面的工作终于做完了");
+    }
+
+
+    @Before
+    public void setUp() {
+
+        //加上这么一句话无论是测试代码中的log或者被测试中的log都会在控制台输出的
+        ShadowLog.stream = System.out;
+
+        Log.d("Test_log", "开启了log日志");
+
+
+        //相当于启动了actvity 经过了 oncreate，onStart和onResume这三个生命周期
+        //一般只是在启动activiy的时候调用
+        mActvity = Robolectric.setupActivity(QXUnitTestActvity.class);
+        mbtn = (Button) mActvity.findViewById(R.id.btn_changge);
+        mTv = (TextView) mActvity.findViewById(R.id.textView);
+    }
+
+    @After
+    public void tearDown() {
+        mActvity = null;
+        mbtn = null;
+        mTv = null;
+    }
+
+    //测试启动初始化是否成功
     @Test
     public void testInit() {
         Assert.assertEquals("actvity packageName is error", "com.ran.qxlinechart", mActvity.getPackageName());
@@ -73,12 +141,14 @@ public class QXUnitTestActvityTest {
         Assert.assertEquals("textView text is error", "text", mTv.getText().toString());
     }
 
+    //测试点击事件是否相应
     @Test
     public void testClickButton() {
         mbtn.performClick();
         Assert.assertEquals("textView text is error", "我被修改了", mTv.getText().toString());
     }
 
+    //测试Actvity生命周期的调用
     @Test
     public void testLifecycleMethods() throws InterruptedException {
         ActivityController<QXUnitTestActvity> controller = Robolectric.buildActivity(QXUnitTestActvity.class);
@@ -110,7 +180,7 @@ public class QXUnitTestActvityTest {
 
     }
 
-    //Fragment是继承app.Fragment
+    //Fragment是继承app.Fragment 生命周期
     @Test
     public void testFragmentLifecyle() {
 
@@ -118,7 +188,7 @@ public class QXUnitTestActvityTest {
 
 
         QxFramentApp framentApp = controller.get();
-         controller.create();////这样一步就走到了onCreatView不仅仅走了onCraete
+        controller.create();////这样一步就走到了onCreatView不仅仅走了onCraete
         Assert.assertEquals("createView", framentApp.name);
 
         controller.start();
@@ -132,6 +202,7 @@ public class QXUnitTestActvityTest {
 
     }
 
+    //测试Actvity的跳转
     @Test
     public void testStartActiviy() {
         mbtn.performClick();
@@ -155,7 +226,7 @@ public class QXUnitTestActvityTest {
         Assert.assertEquals("不是从mActvity跳转到MSCurrentInvestActivity或者是携带的数据不一样", expIntent.getComponent(), act.getComponent());
     }
 
-    //Fragment是继承v4的
+    //Fragment是继承v4的 测试Fragment添加初始化是否成功
     @Test
     public void testFragment() {
 
@@ -169,18 +240,68 @@ public class QXUnitTestActvityTest {
         Assert.assertThat("fragment not start success", fragment.getView(), is(notNullValue()));
     }
 
+    //测试模拟延迟任务的执行
     @Test
-    public void testDelayTask(){
-        Assert.assertFalse(mActvity.mCount==6);//此时没有走线程呢所以不会是6
+    public void testDelayTask() {
+        Assert.assertFalse(mActvity.mCount == 6);//此时没有走线程呢所以不会是6
 
-          mbtn.performClick();
+        mbtn.performClick();
 
         //利用Looper的影子来安排任务的执行，这也符合Android的架构情况
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();//等待UI delay的Tasks运行完毕然后再往下执行
-
-        Assert.assertTrue(mActvity.mCount==6);
+        //ShadowLooper.idleMainLooper();等待mainLooper执行完毕
+        //ShadowLooper.idleMainLooper(1,TimeUnit.SECONDS);等待1秒mainLooper执行完毕
+//        ShadowLooper.runMainLooperOneTask();运行mainLooper的一个任务
+//        ShadowLooper.runMainLooperToNextTask();
+//        ShadowLooper.runUiThreadTasks();//运行Ui上的tasks
+        //用ShadowLooper来管理运行Android的线程
+        Assert.assertTrue(mActvity.mCount == 6);
     }
+//    @Test public void onUnsubscribePostsOffMainThread() throws InterruptedException {
+//        ShadowLooper.pauseMainLooper();
+//
+//        final CountDownLatch latch = new CountDownLatch(1);
+//        final AtomicBoolean called = new AtomicBoolean();
+//        new Thread(new Runnable() {
+//            @Override public void run() {
+//                new MainThreadDisposable() {
+//                    @Override protected void onDispose() {
+//                        called.set(true);
+//                    }
+//                }.dispose();
+//                latch.countDown();
+//            }
+//        }).start();
+//
+//        assertTrue(latch.await(1, SECONDS));
+//        assertFalse(called.get()); // Callback has not yet run.
+//
+//        ShadowLooper.runMainLooperOneTask();
+//        assertTrue(called.get());
+//    }
 
+//    @Test
+//    public void directScheduleOnceUsesHook() {
+//        final CountingRunnable newCounter = new CountingRunnable();
+//        final AtomicReference<Runnable> runnableRef = new AtomicReference<>();
+//        RxJavaPlugins.setScheduleHandler(new Function<Runnable, Runnable>() {
+//            @Override public Runnable apply(Runnable runnable) {
+//                runnableRef.set(runnable);
+//                return newCounter;
+//            }
+//        });
+//
+//        CountingRunnable counter = new CountingRunnable();
+//        scheduler.scheduleDirect(counter);
+//
+//        // Verify our runnable was passed to the schedulers hook.
+//        assertSame(counter, runnableRef.get());
+//
+//        runUiThreadTasks();
+//        // Verify the scheduled runnable was the one returned from the hook.
+//        assertEquals(1, newCounter.get());
+//        assertEquals(0, counter.get());
+//    }
     /**
      * ShadowXX其实就是这个XX的影子，代理或者是复制品  有N个ShadowXX，比如ShadowApplication,ShadowActvity,ShadowToast
      * ShadowListView,ShadowLinearLayout,ShadowBitmap等，也就是说只要Android有的类几乎都有相应的影子Shadow。也就是说只要我们
@@ -232,6 +353,7 @@ public class QXUnitTestActvityTest {
         Assert.assertEquals("toast error", "hello", toastText);
     }
 
+    //测试模拟资源文件的获取
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void testReadResouce() {
@@ -239,26 +361,5 @@ public class QXUnitTestActvityTest {
         Drawable drawable = application.getDrawable(R.mipmap.ic_launcher);
     }
 
-    @Before
-    public void setUp() {
 
-        //加上这么一句话无论是测试代码中的log或者被测试中的log都会在控制台输出的
-        ShadowLog.stream=System.out;
-
-        Log.d("Test_log","开启了log日志");
-
-
-        //相当于启动了actvity 经过了 oncreate，onStart和onResume这三个生命周期
-        //一般只是在启动activiy的时候调用
-        mActvity = Robolectric.setupActivity(QXUnitTestActvity.class);
-        mbtn = (Button) mActvity.findViewById(R.id.btn_changge);
-        mTv = (TextView) mActvity.findViewById(R.id.textView);
-    }
-
-    @After
-    public void tearDown() {
-        mActvity = null;
-        mbtn = null;
-        mTv = null;
-    }
 }
