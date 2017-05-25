@@ -257,51 +257,7 @@ public class QXUnitTestActvityTest {
         //用ShadowLooper来管理运行Android的线程
         Assert.assertTrue(mActvity.mCount == 6);
     }
-//    @Test public void onUnsubscribePostsOffMainThread() throws InterruptedException {
-//        ShadowLooper.pauseMainLooper();
-//
-//        final CountDownLatch latch = new CountDownLatch(1);
-//        final AtomicBoolean called = new AtomicBoolean();
-//        new Thread(new Runnable() {
-//            @Override public void run() {
-//                new MainThreadDisposable() {
-//                    @Override protected void onDispose() {
-//                        called.set(true);
-//                    }
-//                }.dispose();
-//                latch.countDown();
-//            }
-//        }).start();
-//
-//        assertTrue(latch.await(1, SECONDS));
-//        assertFalse(called.get()); // Callback has not yet run.
-//
-//        ShadowLooper.runMainLooperOneTask();
-//        assertTrue(called.get());
-//    }
 
-//    @Test
-//    public void directScheduleOnceUsesHook() {
-//        final CountingRunnable newCounter = new CountingRunnable();
-//        final AtomicReference<Runnable> runnableRef = new AtomicReference<>();
-//        RxJavaPlugins.setScheduleHandler(new Function<Runnable, Runnable>() {
-//            @Override public Runnable apply(Runnable runnable) {
-//                runnableRef.set(runnable);
-//                return newCounter;
-//            }
-//        });
-//
-//        CountingRunnable counter = new CountingRunnable();
-//        scheduler.scheduleDirect(counter);
-//
-//        // Verify our runnable was passed to the schedulers hook.
-//        assertSame(counter, runnableRef.get());
-//
-//        runUiThreadTasks();
-//        // Verify the scheduled runnable was the one returned from the hook.
-//        assertEquals(1, newCounter.get());
-//        assertEquals(0, counter.get());
-//    }
     /**
      * ShadowXX其实就是这个XX的影子，代理或者是复制品  有N个ShadowXX，比如ShadowApplication,ShadowActvity,ShadowToast
      * ShadowListView,ShadowLinearLayout,ShadowBitmap等，也就是说只要Android有的类几乎都有相应的影子Shadow。也就是说只要我们

@@ -25,7 +25,11 @@ import static org.junit.Assert.*;
 /**
  * Created by houqixin on 2017/5/18.
  *
- * PowerMock相对于Mockito增加了私有变量 私有方法和静态方法的mock还有就是方法内部new对象的mock然后截取
+ * PowerMock相对于Mockito
+ * 增加了私有变量
+ * 私有方法
+ * 静态方法的mock
+ * 还有就是方法内部new对象的mock然后截取
  */
 @RunWith(PowerMockRunner.class)//表明用 PowerMockerRunner来运行测试用例，否则无法使用PowerMock
 @PrepareForTest({QXPowerMockDemo.class, QXPowerMockStatic.class})//所有需要测试的类，列在此处，以逗号分隔,静态方法的类最好也在这里列举
@@ -100,22 +104,22 @@ public class QXPowerMockDemoTest {
 
 
     @Test
-    public void testAnser() throws Exception {//窃取回调接口 暂时走不通看来只能用Mockito了
-//
-//        doAnswer(new Answer<Object>() {
-//            @Override
-//            public Object answer(InvocationOnMock invocation) throws Throwable {
-//
-//                Object[] agrments = invocation.getArguments();
-//
-//                QXPowerMockDemo.QXPowerMockCallback callback= (QXPowerMockDemo.QXPowerMockCallback) agrments[1];
-//
-//                callback.onOk("OKOK");
-//                return str;
-//            }
-//        }).when(mPowerMockCommon).dataFromNet(str,mock(QXPowerMockDemo.QXPowerMockCallback.class));
-//
-//        mMockDemo.netData(str);
-//        assertEquals("OKOK",mMockDemo.name);
+    public void testAnser() throws Exception {//窃取回调接口测试失败 暂时走不通看来只能用Mockito了
+
+        doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+
+                Object[] agrments = invocation.getArguments();
+
+                QXPowerMockDemo.QXPowerMockCallback callback= (QXPowerMockDemo.QXPowerMockCallback) agrments[1];
+
+                callback.onOk("OKOK");
+                return str;
+            }
+        }).when(mPowerMockCommon).dataFromNet(str,mock(QXPowerMockDemo.QXPowerMockCallback.class));
+
+        mMockDemo.netData(str);
+        assertEquals("OKOK",mMockDemo.name);
     }
 }
