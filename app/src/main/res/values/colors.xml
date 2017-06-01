@@ -6,6 +6,11 @@
     <color name="aty_current_color_six">#CBCADD</color>
     <color name="aty_current_color_seven">#333092</color>
     <color name="aty_current_color_eight">#999998</color>
+    <color name="act_feedback_tab_btn_gray">#999999</color>
 
-
+    <color name="aty_feedback_bg_color">#F8F8F8</color>
+    <color name="aty_feedback_et_bg_color">#FFFFFF</color>
+    <color name="aty_feedback_submit_enable_normal_color">#FF4081</color>
+    <color name="aty_feedback_submit_enable_pressed_color">#3F51B5</color>
+    <color name="aty_feedback_submit_enable_false_color">#00FFFF</color>
 </resources>

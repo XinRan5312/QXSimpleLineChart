@@ -26,4 +26,32 @@
         <item name="vertical_Space">20dp</item>
         <item name="isFull">false</item>
     </style>
+    <style name="act_feedback_tab_btn_style_four">
+        <item name="android:background">@drawable/selector_tag_btn</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:button">@null</item>
+    </style>
+    <style name="act_feedback_tab_btn_style_three">
+        <item name="android:background">@drawable/selector_tag_btn</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:button">@null</item>
+    </style>
+    <style name="act_feedback_tab_btn_style_two">
+        <item name="android:background">@drawable/selector_tag_btn</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:button">@null</item>
+    </style>
+
 </resources>
