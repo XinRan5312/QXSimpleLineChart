@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key'
+            keyPassword 'qunar.123'
+            storeFile file('D:/keystore.jks')
+            storePassword 'qunar.123'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
-
     defaultConfig {
         applicationId "com.ran.qxlinechart"
         minSdkVersion 14
@@ -20,44 +27,37 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.youth.banner:banner:1.4.9' //最新版本
+    compile 'com.youth.banner:banner:1.4.9'
+    //最新版本
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
-    testCompile "org.robolectric:robolectric:3.3.2"//一个牛奔的android测试框架
-
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    //一个牛奔的android测试框架
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     //robolectric针对support-v4的shadows Fragment 测试会用到
-    testCompile "org.robolectric:shadows-support-v4:3.3.2"
-
+    testCompile 'org.robolectric:shadows-support-v4:3.3.2'
     //Dagger2
     compile 'com.google.dagger:dagger:2.0.2'
     compile 'javax.annotation:jsr250-api:1.0'
     //要配置支持apt插件
     apt 'com.google.dagger:dagger-compiler:2.0.2'
-
-//    testCompile 'com.github.fabioCollini:DaggerMock:0.6.1'
-//    androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.1' //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话
+    //    testCompile 'com.github.fabioCollini:DaggerMock:0.6.1'
+    //    androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.1' //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话
     //java——test
     testCompile 'junit:junit:4+'
-    testCompile "org.mockito:mockito-core:2.7.2"
-
+    testCompile 'org.mockito:mockito-core:2.7.2'
     //androidtest
     androidTestCompile 'junit:junit:4+'
-    androidTestCompile "org.mockito:mockito-core:2.7.2"
-    androidTestCompile "org.mockito:mockito-android:2.7.2"
+    androidTestCompile 'org.mockito:mockito-core:2.7.2'
+    androidTestCompile 'org.mockito:mockito-android:2.7.2'
     //mockito和powermock冲突两者只能用其一java.lang.NoClassDefFoundError: org/mockito/cglib/proxy/Enhancer
-
     testCompile 'org.powermock:powermock-module-junit4:1.6.2'
     testCompile 'org.powermock:powermock-api-mockito:1.6.2'
-
-
-
-//    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.5'
-//    testCompile 'org.powermock:powermock-classloading-xstream:1.6.5'
-//    testCompile 'org.mockito:mockito-all:1.10.19'
+    //    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.5'
+    //    testCompile 'org.powermock:powermock-classloading-xstream:1.6.5'
+    //    testCompile 'org.mockito:mockito-all:1.10.19'
 }
