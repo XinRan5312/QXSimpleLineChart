@@ -13,4 +13,12 @@
     <color name="aty_feedback_submit_enable_normal_color">#FF4081</color>
     <color name="aty_feedback_submit_enable_pressed_color">#3F51B5</color>
     <color name="aty_feedback_submit_enable_false_color">#00FFFF</color>
+
+    <color name="ui_white">#FFFFFF</color>
+    <color name="ui_gray">#444444</color>
+    <color name="ui_shadowgray">#CCCCCC</color>
+    <color name="ui_titleBackground">#FFFFFF</color>
+    <color name="ui_titleFontColor">#000000</color>
+    <color name="ui_defaultButtonColor">#0099FF</color>
+    <color name="ui_pressedButtonColor">#0066CC</color>
 </resources>
