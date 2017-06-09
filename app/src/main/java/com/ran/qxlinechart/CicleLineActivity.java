@@ -12,7 +12,7 @@ public class CicleLineActivity extends AppCompatActivity {
 
         QXCicleLineView cicleLineView= (QXCicleLineView) findViewById(R.id.cicle_line);
 
-        cicleLineView.setValue(18);
+        cicleLineView.setValue(78);
 
 
 

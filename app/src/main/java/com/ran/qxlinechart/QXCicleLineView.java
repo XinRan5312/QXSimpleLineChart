@@ -12,6 +12,7 @@ import android.graphics.PathEffect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 
+import android.graphics.SweepGradient;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
@@ -227,12 +228,11 @@ public class QXCicleLineView extends View {
 //                ,49.24f,12.56f,49.24f,12.56f,49.24f,12.56f,49.24f,12.56f,49.24f,12.56f},0);
 //
 //        cyclePaint.setPathEffect(pathEffect);
-//        SweepGradient sweepGradient=new SweepGradient(300,300,new int[] {
-//                Color.RED, Color.GREEN, Color.BLUE, Color.WHITE },null);
+        SweepGradient sweepGradient=new SweepGradient(mRadius / 2, mRadius / 2,mColor,null);//梯度渐变
         LinearGradient linearGradient = new LinearGradient(0, 0, 0, 100,
                 mColor, null,
-                Shader.TileMode.MIRROR);
-        cyclePaint.setShader(linearGradient);
+                Shader.TileMode.MIRROR);//线性渐变
+        cyclePaint.setShader(sweepGradient);
 
 
     }
