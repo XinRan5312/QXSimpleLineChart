@@ -12,14 +12,19 @@ public class PositionEntity {
     public String address;
 
     public String city;
+    public String addressCode;
+
+    public String cityCode;
 
     public PositionEntity() {
     }
 
-    public PositionEntity(double longitude, double latitue, String address, String city) {
+    public PositionEntity(double latitue,double longitude, String address, String city, String addressCode, String cityCode) {
         this.longitude = longitude;
         this.latitue = latitue;
         this.address = address;
         this.city = city;
+        this.addressCode = addressCode;
+        this.cityCode = cityCode;
     }
 }

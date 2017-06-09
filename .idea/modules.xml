@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/QXSimpleLineChart.iml" filepath="$PROJECT_DIR$/QXSimpleLineChart.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/swagger-client/swagger-client.iml" filepath="$PROJECT_DIR$/swagger-client/swagger-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/zbarcode/zbarcode.iml" filepath="$PROJECT_DIR$/zbarcode/zbarcode.iml" />
     </modules>
   </component>

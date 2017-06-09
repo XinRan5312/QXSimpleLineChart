@@ -1,1 +1,1 @@
-include ':app', ':zbarcode'
+include ':app', ':zbarcode', ':swagger-client'
