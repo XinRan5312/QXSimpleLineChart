@@ -45,6 +45,7 @@
                 android:layout_marginBottom="30dp"
                 android:text="0/200"
                 android:textSize="@dimen/text_size_normal"/>
+
         </RelativeLayout>
 
         <LinearLayout

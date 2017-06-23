@@ -61,6 +61,7 @@ public class MSPictureCheckActivity extends MSBaseActivity implements View.OnCli
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        setResult(-101);
         finish();
         return true;
     }
@@ -83,7 +84,6 @@ public class MSPictureCheckActivity extends MSBaseActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_take_photo:
-                takePhoto();
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CAMERA_WRITE);
@@ -105,6 +105,7 @@ public class MSPictureCheckActivity extends MSBaseActivity implements View.OnCli
                 checkCameraPic();
                 break;
             case R.id.btn_cancel:
+                setResult(-101);
                 finish();
                 break;
             default:
@@ -125,8 +126,6 @@ public class MSPictureCheckActivity extends MSBaseActivity implements View.OnCli
     }
 
     private void takePhoto() {
-
-
         File file = new File(Environment.getExternalStorageDirectory(), "拍照");
         if (!file.exists()) {
             file.mkdir();

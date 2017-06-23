@@ -14,8 +14,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_style_alert_dialog_background"
-        >
+        android:background="@drawable/btn_style_alert_dialog_background">
 
 
         <Button
@@ -27,8 +26,7 @@
             android:layout_height="wrap_content"
             android:text="拍照"
             android:background="@drawable/btn_style_alert_dialog_button"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_pick_photo"
@@ -39,8 +37,7 @@
             android:layout_height="wrap_content"
             android:text="从相册选择"
             android:background="@drawable/btn_style_alert_dialog_button"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_cancel"
@@ -54,7 +51,6 @@
             android:background="@drawable/btn_style_alert_dialog_cancel"
             android:textColor="#ffffff"
             android:textStyle="bold"
-
             />
     </LinearLayout>
 </RelativeLayout>

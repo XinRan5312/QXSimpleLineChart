@@ -23,8 +23,8 @@ import android.view.View;
 public class QXCicleLineView extends View {
 
 
-    private Float[] strPercent = new Float[]{8.3f, 1.7f, 8.3f, 1.7f, 8.3f, 1.7f, 8.3f, 1.7f, 8.3f, 1.7f
-            , 8.3f, 1.7f, 8.3f, 1.7f, 8.3f, 1.7f, 8.3f, 1.7f, 8.3f, 1.7f};
+    private Float[] strPercent = new Float[]{7f, 1.4f, 7f, 1.4f, 7f, 1.4f,7f, 1.4f,7f, 1.4f,7f, 1.4f,
+            7f, 1.4f,7f, 1.4f,7f, 1.4f,7f, 1.4f,7f, 1.4f,7f, 1.4f};
 
     private float mRadius; //圆的直径
     // 圆的粗细
@@ -64,7 +64,7 @@ public class QXCicleLineView extends View {
 
     private void init(){
 
-        mRadius=dp2px(40);
+        mRadius=dp2px(24);
 
         mStrokeWidth=dp2px(3);
     }
@@ -87,9 +87,9 @@ public class QXCicleLineView extends View {
         //画圆环
         drawCycle(canvas);
         Paint paintText = new Paint();
-        paintText.setTextSize(dp2px(12));//设置字体大小
+        paintText.setTextSize(dp2px(10));//设置字体大小
         paintText.setTypeface(Typeface.DEFAULT);
-        paintText.setColor(0xFF000000);
+        paintText.setColor(0xFF333333);
         canvas.drawText(mValue, mRadius / 2-dp2px(13), mRadius / 2+dp2px(5), paintText);
     }
 

@@ -1,6 +1,7 @@
 package com.ran.qxlinechart;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.ran.qxlinechart.unittest.AppComponent;
 import com.ran.qxlinechart.unittest.DaggerAppComponent;
@@ -13,11 +14,13 @@ import com.ran.qxlinechart.unittest.QxCommonModleFactory;
  */
 public class QxApplication extends Application {
     private static AppComponent sAppComponent;
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
         initAppModleComponent();
+        context=this;
     }
 
     private void initAppModleComponent() {
@@ -31,5 +34,9 @@ public class QxApplication extends Application {
     public static AppComponent getAppComponent(){
 
         return sAppComponent;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

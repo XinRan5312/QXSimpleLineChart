@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -57,6 +58,7 @@ public class MSFeedbackActvity extends MSBaseActivity {
     private ExecutorService mExecutorService;
     private List<Runnable> mTasks = new ArrayList<>();
     private final String mBaseUrl = "";
+    private static final int maxLengh = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +83,25 @@ public class MSFeedbackActvity extends MSBaseActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                int len = Selection.getSelectionEnd(mFeedBackEt.getText());
+                if (len > maxLengh) {
+                    Selection.setSelection(mFeedBackEt.getText(), maxLengh);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable != null) {
                     String content = editable.toString();
+
                     if (content != null) {
-                        mFeedBackTextCountTv.setText("" + content.length() + "/" + 200);
+                        if (content.length() > maxLengh) {
+
+                            editable.delete(maxLengh, maxLengh + 1);
+
+                        } else {
+                            mFeedBackTextCountTv.setText("" + content.length() + "/" + maxLengh);
+                        }
                     }
                 }
             }
@@ -97,17 +110,19 @@ public class MSFeedbackActvity extends MSBaseActivity {
 
     private void createOneImageView(final Integer tag) {
 
-        if (mMapImg.containsKey(tag)) {
+        if (mMapImg.containsKey(tag) || mLinearLayout.getChildCount() == 4) {
             return;
         }
         final ImageView imageView = new ImageView(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
-        params.leftMargin=dip2px(15);
-        params.topMargin=dip2px(15);
-        params.bottomMargin=dip2px(15);
-        params.width =dip2px(60);
-        params.height =dip2px(60);
+        params.leftMargin = dip2px(16);
+        params.topMargin = dip2px(16);
+        params.bottomMargin = dip2px(16);
+        params.width = dip2px(60);
+        params.height = dip2px(60);
+
         imageView.setLayoutParams(params);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(R.mipmap.camera);
         imageView.setTag(tag);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -117,14 +132,14 @@ public class MSFeedbackActvity extends MSBaseActivity {
                 if (viewTag == tag) {
                     if (!mMapImg.containsKey(tag)) {
                         mMapImg.put(tag, imageView);
+                        mTSelectTag = tag;
+                        startActivityForResult(new Intent(MSFeedbackActvity.this, MSPictureCheckActivity.class), 1);
                     }
-                    startActivityForResult(new Intent(MSFeedbackActvity.this, MSPictureCheckActivity.class), 1);
-
-                    mTSelectTag = tag;
                 }
             }
         });
         mLinearLayout.addView(imageView);
+
     }
 
     @Override
@@ -138,15 +153,22 @@ public class MSFeedbackActvity extends MSBaseActivity {
                         image = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageCaptureUri));
                         Log.e("Tag", "拍照");
                         if (image != null) {
+
                             mMapImg.get(mTSelectTag).setImageBitmap(image);
-                            createOneImageView(mCameraImgCount.getAndDecrement());
+
                             saveImgSD(image);
+
+                            createOneImageView(mCameraImgCount.getAndDecrement());
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
+        }else if(resultCode==-101){
+            if(mMapImg.containsKey(mTSelectTag))
+                mMapImg.remove(mTSelectTag);
         }
     }
 
@@ -159,9 +181,7 @@ public class MSFeedbackActvity extends MSBaseActivity {
             return;
         }
         final Map<String, String> params = new HashMap<String, String>();
-//        params.put("user_id", loginKey);
-//        params.put("file_type", "1");
-//        params.put("content", img_content.getText().toString());
+
         mTasks.add(new Runnable() {
             @Override
             public void run() {
@@ -304,9 +324,28 @@ public class MSFeedbackActvity extends MSBaseActivity {
     }
 
 
-
-   private int dip2px(float dipValue) {
+    private int dip2px(float dipValue) {
         final float scale = this.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+
+    public void dealImg(InputStream inputStream) {
+
+    }
+
+    /**
+     * 获取剪切后的图片
+     */
+    public static Intent getImageClipIntent() {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
+        intent.setType("image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);//裁剪框比例
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 80);//输出图片大小
+        intent.putExtra("outputY", 80);
+        intent.putExtra("return-data", true);
+        return intent;
     }
 }

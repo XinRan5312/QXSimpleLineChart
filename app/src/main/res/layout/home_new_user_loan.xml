@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/new_user_loan_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout style="@style/new_user_loan_syle">
+
+            <TextView
+                android:id="@+id/new_user_earn_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="7.0%"
+                android:textColor="#F3091C"
+                android:textSize="48sp" />
+
+            <TextView
+                android:id="@+id/new_user_earn_hint"
+                style="@style/new_user_text_syle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_user_earn_day"
+                android:gravity="center"
+                android:text="预期年化收益" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="2dp"
+            android:layout_height="32dp"
+            android:background="#F0F0F0" />
+
+        <RelativeLayout style="@style/new_user_loan_syle">
+
+            <TextView
+                android:id="@+id/new_user_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="90天"
+                android:textColor="#666666"
+                android:textSize="48sp" />
+
+            <TextView
+                android:id="@+id/new_user_days_hint"
+                style="@style/new_user_text_syle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/new_user_days"
+                android:gravity="center"
+                android:text="预期年化收益" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/new_user_sure_invest"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/new_user_loan_container"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="立即投资"
+        android:gravity="center"
+        android:textSize="16sp"/>
+
+
+</RelativeLayout>
