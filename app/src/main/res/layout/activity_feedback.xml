@@ -54,7 +54,118 @@
             android:layout_height="wrap_content"
             android:background="@color/act_feedback_tab_btn_gray"
             android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/feedback_img_container_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
 
+                <ImageView
+                    android:id="@+id/feedback_img_one"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_centerVertical="true"/>
+
+
+                <TextView
+                    android:id="@+id/feedback_img_close_one"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentTop="true"
+                    tools:text="我们"
+                    android:gravity="top|right"
+                    android:background="#3D000000"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/feedback_img_container_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/feedback_img_two"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_centerVertical="true"/>
+
+
+                <TextView
+                    android:id="@+id/feedback_img_close_two"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentTop="true"
+                    tools:text="我们"
+                    android:gravity="top|right"
+                    android:background="#3D000000"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/feedback_img_container_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/feedback_img_three"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_centerVertical="true"/>
+
+
+                <TextView
+                    android:id="@+id/feedback_img_close_three"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentTop="true"
+                    tools:text="我们"
+                    android:gravity="top|right"
+                    android:background="#3D000000"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/feedback_img_container_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/feedback_img_four"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_centerVertical="true"/>
+
+
+                <TextView
+                    android:id="@+id/feedback_img_close_four"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentTop="true"
+                    tools:text="我们"
+                    android:gravity="top|right"
+                    android:background="#3D000000"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
         </LinearLayout>
 
         <TextView

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +60,18 @@ public class MSFeedbackActvity extends MSBaseActivity {
     private List<Runnable> mTasks = new ArrayList<>();
     private final String mBaseUrl = "";
     private static final int maxLengh = 200;
-
+    private RelativeLayout mImgContainerOne;
+    private RelativeLayout mImgContainerTwo;
+    private RelativeLayout mImgContainerTree;
+    private RelativeLayout mImgContainerFour;
+    private ImageView mImgViewOne;
+    private ImageView mImgViewTwo;
+    private ImageView mImgViewThree;
+    private ImageView mImgViewFour;
+    private TextView mImgMaskOne;
+    private TextView mImgMaskTwo;
+    private TextView mImgMaskThree;
+    private TextView mImgMaskFour;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +83,21 @@ public class MSFeedbackActvity extends MSBaseActivity {
         mFeedBackEt = $(R.id.feedback_et);
         mFeedBackTextCountTv = $(R.id.feedback_text_count_hint);
         mLinearLayout = $(R.id.camera_container);
+        mImgContainerOne=$(R.id.feedback_img_container_one);
+        mImgContainerTwo=$(R.id.feedback_img_container_two);
+        mImgContainerTree=$(R.id.feedback_img_container_three);
+        mImgContainerFour=$(R.id.feedback_img_container_four);
+        mImgViewOne=$(R.id.feedback_img_one);
+        mImgViewTwo=$(R.id.feedback_img_two);
+        mImgViewThree=$(R.id.feedback_img_three);
+        mImgViewFour=$(R.id.feedback_img_four);
 
-        createOneImageView(mCameraImgCount.getAndDecrement());
+        mImgMaskOne=$(R.id.feedback_img_close_one);
+        mImgMaskTwo=$(R.id.feedback_img_close_two);
+        mImgMaskThree=$(R.id.feedback_img_close_three);
+        mImgMaskFour=$(R.id.feedback_img_close_four);
+
+        createOneImageViewTwo(mCameraImgCount.getAndDecrement());
 
         mFeedBackEt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -107,6 +132,16 @@ public class MSFeedbackActvity extends MSBaseActivity {
             }
         });
     }
+
+    private void createOneImageViewTwo(final Integer tag) {
+
+        if (mMapImg.containsKey(tag) || tag== 4) {
+            return;
+        }
+
+
+    }
+
 
     private void createOneImageView(final Integer tag) {
 
@@ -158,7 +193,7 @@ public class MSFeedbackActvity extends MSBaseActivity {
 
                             saveImgSD(image);
 
-                            createOneImageView(mCameraImgCount.getAndDecrement());
+                            createOneImageViewTwo(mCameraImgCount.getAndDecrement());
 
                         }
                     } catch (Exception e) {
@@ -166,8 +201,8 @@ public class MSFeedbackActvity extends MSBaseActivity {
                     }
                 }
             }
-        }else if(resultCode==-101){
-            if(mMapImg.containsKey(mTSelectTag))
+        } else if (resultCode == -101) {
+            if (mMapImg.containsKey(mTSelectTag))
                 mMapImg.remove(mTSelectTag);
         }
     }
