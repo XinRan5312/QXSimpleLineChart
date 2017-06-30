@@ -42,7 +42,10 @@ public class QxTestDaggerActvity extends MSBaseActivity {
 
      要不然，我们会写好多多余而又无聊的代码，就像本例中的QxImageManager一样，如果要是自己创建我们要想使用QxImageManager，得先创建
      其它三个对象。
-     */
+
+     说白了Drager的核心其实就是他们三个者的关系：Inject（被注入者使用注入者）Componet(桥梁：负责查看监听他的被注入者中所有被Inject修饰的属性，因为这些
+     都是要注入的对象，然后从Module里查找生成注入者的provider给这个属性) Module(负责生产注入者对象)
+    */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
